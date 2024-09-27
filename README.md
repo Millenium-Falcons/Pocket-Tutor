@@ -11,10 +11,10 @@
 
 | Member | Role | Branch |
 |--|--|--|
-|<p align=center>Debjeet Banerjee</p>|<p align=center>GenAI</p>|<a href="https://github.com/mintRaven-org/AgriShield/tree/ML/DL">GenAI</a>|
-|<p align=center>Hritesh Saha</p>|<p align=center>Backend</p>|<a href="https://github.com/mintRaven-org/AgriShield/tree/backend">Backend</a>|
-|<p align=center>Imon Chakraborty</p>|<p align=center>Design & Frontend</p>|<a href="https://github.com/mintRaven-org/AgriShield/tree/design">Design</a>|
-|<p align=center>Avirup Ghosal</p>|<p align=center>Frontend</p>|<a href="https://github.com/mintRaven-org/AgriShield/tree/frontend">Frontend</a>|
+|<p align=center>Debjeet Banerjee</p>|<p align=center>GenAI</p>|<a href="https://github.com/Millenium-Falcons/Pocket-Tutor/tree/GenAI">GenAI</a>|
+|<p align=center>Hritesh Saha</p>|<p align=center>Backend</p>|<a href="https://github.com/Millenium-Falcons/Pocket-Tutor/tree/backend">Backend</a>|
+|<p align=center>Imon Chakraborty</p>|<p align=center>Design & Frontend</p>|<a href="https://github.com/Millenium-Falcons/Pocket-Tutor/tree/design">Design</a>|
+|<p align=center>Avirup Ghosal</p>|<p align=center>Frontend</p>|<a href="https://github.com/Millenium-Falcons/Pocket-Tutor/tree/frontend">Frontend</a>|
 
 </td><td>
 
