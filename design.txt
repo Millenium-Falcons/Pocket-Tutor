@@ -1,0 +1,26 @@
+created by @ImonChakraborty
+dated: 27 sept 2024
+design info file for future ref.
+
+LOGIN PAGE
+=============================================
+- first and last name [MANDATORY]
+- atleast one course selection [MANDATORY]
+- bio (OPTIONAL)
+==============================================
+FEATURES
+  - text response
+  - image processing
+  - document processing
+  - voice to text
+ALL ABOVE IN ONE TAB (WHATSAPP LIKE INTERFACE FOR ONLY THIS TAB)
+=====================================================================
+Pages that will be made for the app are homepage (or the dashboard), 
+the AI assist page and the profile page.
+=====================================================================
+dashboard / homepage          |      profile:-
+- HI USERNAME                 |        - enrolled courses
+- graph of activity           |        - time in app
+- enrolled courses            |        - activity calendar
+- flashcards                  |        - course suggestions
+======================================================================
