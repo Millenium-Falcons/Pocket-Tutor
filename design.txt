@@ -1,0 +1,32 @@
+LOGIN PAGE
+=
+first and last name
+atleast one course selection
+bio
+
+
+
+text response
+=
+image processing
+=
+document processing
+=
+voice to text
+ALL ABOVE IN ONE TAB (WHATSAPP LIKE INTERFACE)
+
+
+
+dashboard / homepage
+  HI USERNAME
+  graph of activity
+  enrolled courses
+  flashcards
+  
+
+
+profile:-
+  enrolled courses
+  time in app
+  activity calendar
+  course suggestions
