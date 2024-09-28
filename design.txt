@@ -9,13 +9,20 @@ LOGIN PAGE
 - bio (OPTIONAL)
 ==============================================
 FEATURES
-  - text response
-  - image processing
-  - document processing
-  - voice to text
+  - text response for learning new stuffs
+  - image processing for helping understand
+    visual concepts
+  - document processing for saving time and
+    summarizing difficult concepts in easier
+    words
+  - voice to text just in case
+  - OCR service for reading text from images
+  - Grammer checking paraphrasing if not
+    confident enough with words
+
 ALL ABOVE IN ONE TAB (WHATSAPP LIKE INTERFACE FOR ONLY THIS TAB)
 =====================================================================
-Pages that will be made for the app are homepage (or the dashboard), 
+Pages that will be made for the app are homepage (or the dashboard),
 the AI assist page and the profile page.
 =====================================================================
 dashboard / homepage          |      profile:-
