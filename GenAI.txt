@@ -23,6 +23,8 @@ TODO:
 
   - function to record history, load history from the database.
   - will be using MongoDB for now.
+  - use fastAPI to deploy the model over localhost
+  - run tests over the deployed model using postman
 
 DONE:
   - Nothing yet....but will do soon.
