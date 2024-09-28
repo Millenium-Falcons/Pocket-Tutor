@@ -1,0 +1,15 @@
+created by @mintRaven-05
+dated: 28th sept 2024
+
+TODO list for future ref
+=================================================
+We are using gemini for the assistant part
+just as the problem statement number 19 says.
+
+-> We give extra features for history recording,
+   better content processing and lot more.
+-> We will use gemini for all kinds of data
+   processing. [text, image, document]
+=================================================
+
+
