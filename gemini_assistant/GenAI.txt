@@ -13,7 +13,6 @@ TODO list for future ref
  =================================================================
 
 TODO:
-  - function for processing and generating normal texts
   - function for processing images
   - function for processing documents
     -> supported version: PDF, TXT, CSV, HTML ...as mentioned
@@ -27,5 +26,5 @@ TODO:
   - run tests over the deployed model using postman
 
 DONE:
-  - Nothing yet....but will do soon.
+  - function for processing and generating normal texts
 
