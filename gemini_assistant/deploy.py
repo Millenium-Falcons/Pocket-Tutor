@@ -7,7 +7,7 @@ from image import *
 from docs import *
 from PIL import Image
 from pydantic import BaseModel
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException, status
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Request, status
 
 app = FastAPI()
 
@@ -19,6 +19,17 @@ class ImageReq(BaseModel):
 @app.get("/")
 def index():
     return {"health": "ok", "status": "working"}
+
+
+@app.post("/chat")
+async def pchat(request: Request):
+    try:
+        query = await request.body()
+        query_str = query.decode("utf-8")
+        res = chat_session(query_str)
+        return {"response": res}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.post("/image")
