@@ -19,7 +19,7 @@ def init_model(model_name: str, API: str) -> genai.GenerativeModel:
 
 
 def chat_session(query: str) -> str:
-    model = init_model("gemini-1.5-flash", "AIzaSyB7zH-31mzF9BUjBVUYbO5any0UM4RasIE")
+    model = init_model("gemini-1.5-flash", "")
     prompts, responses = LoadHistory()
     session = model.start_chat(history=history.GenerateHistoryStub(prompts, responses))
     try:
