@@ -28,12 +28,12 @@ app.use(bodyParser.json());
 app.post("/signup", async (req, res) => {
     const { username, password, confirmPassword } = req.body;
     try {
+      if (password !== confirmPassword) {
+        return res.status(400).send({ message: "Passwords are not matching" });
+      }
       const user = await signup.findOne({ username });
       if (user) {
         return res.status(401).json({ error: "User Already exists!!" });
-      }
-      if (password !== confirmPassword) {
-        return res.status(400).send({ message: "Passwords are not matching" });
       }
       const salt = await bcryptjs.genSalt(10);
       const hashedpassword = await bcryptjs.hash(password, salt);
@@ -42,11 +42,30 @@ app.post("/signup", async (req, res) => {
         password: hashedpassword,
       });
       await sign.save();
-      res.status(201).json({ message: "User registered Successfully!!" });
+      return res.status(201).json({ message: "User registered Successfully!!" });
     } catch {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   });
+
+  app.post("/login",async(req,res)=>{
+    try{
+      const {username,password}=req.body;
+      const user=await signup.findOne({username});
+      if(!user){
+        return res.status(401).json({error:"Invalid username or password"});
+      }
+      const isMatch=await bcryptjs.compare(password,user.password);
+      if(!isMatch){
+        return res.status(401).json({error:"Invalid username or password"});
+      }else{
+        return res.status(200).json({message:"Login Successful!!"});
+      }
+    }
+    catch{
+      return res.status(400).json({message:"Error while Login"});
+    }
+  })
 
   const upload = multer({ storage: multer.memoryStorage() });
 
@@ -56,7 +75,7 @@ app.post("/signup", async (req, res) => {
   console.log(pdfFile, query);
 
   if (!pdfFile || !query) {
-    return res.status(400).json({ error: "PDF file is required" });
+    return res.status(400).json({ error: "PDF file or query is Missing!" });
   }
     try{
       const formData = new FormData();
@@ -77,6 +96,53 @@ app.post("/signup", async (req, res) => {
       console.error('Error uploading document:', error);
       return res.status(500).json({ error: "Error uploading Document" });
     }
+  });
+
+  app.post("/ask-ai/img",upload.single("image"),async(req,res)=>{
+    const imageFile = req.file;
+    const { query }=req.body;
+    if(!imageFile || !query){
+      return res.status(400).json({error:"Image file or Query is Missing!"});
+    }
+    try{
+      const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`;
+      
+      const requestData = {
+          image: base64Image,
+          query: query
+      };
+      const aiResponse=await axios.post('http://localhost:8000/doc',requestData,{
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    console.log(aiResponse);
+    const result=aiResponse.data;
+    return res.status(200).json({response:result});
+    }
+    catch{
+      return res.status(500).json({error:"Error while uploading image"});
+    }
+  });
+
+  app.post("/ask-ai/text",async(req,res)=>{
+    const { query }=req.body;
+    if(!query){
+      return res.status(400).json({error:"Query is Missing!"});
+    };
+    try{
+      const aiResponse=await axios.post('http://localhost:8000/doc',query,{
+        headers:{
+          'Content-Type':'text/plain'
+        }
+      });
+      console.log(aiResponse);
+      const result=aiResponse.data;
+      return res.status(200).json({response:result});
+    }
+    catch{
+      return res.status(500).json({error:"Error while uploading text"});
+    };
   })
 
 app.listen(port,()=>{
