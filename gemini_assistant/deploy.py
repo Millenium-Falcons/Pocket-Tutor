@@ -1,13 +1,37 @@
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 import os
+import io
+import base64
 import tempfile
 
+from starlette.types import HTTPExceptionHandler
+from chat import *
+from image import *
+from docs import *
+from PIL import Image
+from pydantic import BaseModel
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, status
+
 app = FastAPI()
+
+
+class ImageReq(BaseModel):
+    image: str
 
 
 @app.get("/")
 def index():
     return {"health": "ok", "status": "working"}
+
+
+@app.post("/image")
+def pimage(request: ImageReq, query: str = Form(...)):
+    try:
+        b = base64.b64decode(request.image.split(",")[1])
+        img = Image.open(io.BytesIO(b))
+        res = process_image(img, query)
+        return {"response": res}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.post("/doc")
