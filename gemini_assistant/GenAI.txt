@@ -13,18 +13,18 @@ TODO list for future ref
  =================================================================
 
 TODO:
-  - function for processing images
-  - function for processing documents
-    -> supported version: PDF, TXT, CSV, HTML ...as mentioned
-                          in the Google AI Studio Documentation
 
-    -> [EXTRA]: will try to make it support for DOCX files as well
+  -> [EXTRA]: will try to make it support for DOCX files as well
 
   - function to record history, load history from the database.
   - will be using MongoDB for now.
-  - use fastAPI to deploy the model over localhost
-  - run tests over the deployed model using postman
 
 DONE:
   - function for processing and generating normal texts
+  - function for processing images
+  - function for processing documents
+    -> supported extensions: PDF, TXT, CSV, HTML ...as mentioned
+                             in the Google AI Studio Documentation
+  - use fastAPI to deploy the model over localhost
+  - run tests over the deployed model using postman
 
