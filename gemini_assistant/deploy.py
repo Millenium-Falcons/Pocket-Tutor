@@ -2,8 +2,6 @@ import os
 import io
 import base64
 import tempfile
-
-from starlette.types import HTTPExceptionHandler
 from chat import *
 from image import *
 from docs import *
