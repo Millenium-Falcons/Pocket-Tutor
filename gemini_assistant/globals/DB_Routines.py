@@ -17,17 +17,21 @@ uri = ""
 client = MongoClient(uri, server_api=ServerApi("1"))
 
 # --------------------------------------------------------------------------
+
 try:
     client.admin.command("ping")
     print("You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
+
 # --------------------------------------------------------------------------
+
 db = client["Pocket_Tutor"]
-collection = db["signup_infos"]
-
+collection = db["chat_history"]
 
 # --------------------------------------------------------------------------
+
+
 def readFromDB() -> List[Dict[str, str]]:
     results = []
     data = collection.find({})
@@ -40,6 +44,8 @@ def readFromDB() -> List[Dict[str, str]]:
 
 
 # --------------------------------------------------------------------------
+
+
 def WriteIntoDB(query: str, response: str) -> None:
     data = readFromDB()
     length = len(data)
