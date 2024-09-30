@@ -15,7 +15,7 @@ import tempfile
 from chat import *
 from image import *
 from docs import *
-from globals.history import *
+from history import *
 from PIL import Image
 from pydantic import BaseModel
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Request, status

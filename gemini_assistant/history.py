@@ -27,6 +27,7 @@ def LoadHistory() -> Tuple[List[str], List[str]]:
                 continue
     return (query_list, response_list)
 
+
 # -----------------------------------------------------------------
 
 
@@ -41,40 +42,41 @@ def GenerateHistoryStub(
     query_itr: List, response_itr: List
 ) -> List[Dict[str, Union[str, List[str]]]]:
     stub = [
-            {
-                "role":"user",
-                "parts": [
+        {
+            "role": "user",
+            "parts": [
                 "you are a Gemini-powered AI learning companion. You are named pocket tutor and you job to help students study and solve their educational problems"
-                ]
-            }
-            {
-                "role": "model",
-                "parts": [
+            ],
+        },
+        {
+            "role": "model",
+            "parts": [
                 "Understood, i am supposed to help students with study and solve problems related to it."
-                ]
-            }
-            {"role": "user", "parts": [query_itr[0]]},
-            {"role": "model", "parts": [response_itr[0]]},
-            {"role": "user", "parts": [query_itr[1]]},
-            {"role": "model", "parts": [response_itr[1]]},
-            {"role": "user", "parts": [query_itr[2]]},
-            {"role": "model", "parts": [response_itr[2]]},
-            {"role": "user", "parts": [query_itr[3]]},
-            {"role": "model", "parts": [response_itr[3]]},
-            {"role": "user", "parts": [query_itr[4]]},
-            {"role": "model", "parts": [response_itr[4]]},
-            {"role": "user", "parts": [query_itr[5]]},
-            {"role": "model", "parts": [response_itr[5]]},
-            {"role": "user", "parts": [query_itr[6]]},
-            {"role": "model", "parts": [response_itr[6]]},
-            {"role": "user", "parts": [query_itr[7]]},
-            {"role": "model", "parts": [response_itr[7]]},
-            {"role": "user", "parts": [query_itr[8]]},
-            {"role": "model", "parts": [response_itr[8]]},
-            {"role": "user", "parts": [query_itr[9]]},
-            {"role": "model", "parts": [response_itr[9]]},
+            ],
+        },
+        {"role": "user", "parts": [query_itr[0]]},
+        {"role": "model", "parts": [response_itr[0]]},
+        {"role": "user", "parts": [query_itr[1]]},
+        {"role": "model", "parts": [response_itr[1]]},
+        {"role": "user", "parts": [query_itr[2]]},
+        {"role": "model", "parts": [response_itr[2]]},
+        {"role": "user", "parts": [query_itr[3]]},
+        {"role": "model", "parts": [response_itr[3]]},
+        {"role": "user", "parts": [query_itr[4]]},
+        {"role": "model", "parts": [response_itr[4]]},
+        {"role": "user", "parts": [query_itr[5]]},
+        {"role": "model", "parts": [response_itr[5]]},
+        {"role": "user", "parts": [query_itr[6]]},
+        {"role": "model", "parts": [response_itr[6]]},
+        {"role": "user", "parts": [query_itr[7]]},
+        {"role": "model", "parts": [response_itr[7]]},
+        {"role": "user", "parts": [query_itr[8]]},
+        {"role": "model", "parts": [response_itr[8]]},
+        {"role": "user", "parts": [query_itr[9]]},
+        {"role": "model", "parts": [response_itr[9]]},
     ]
 
     return stub
+
 
 # -----------------------------------------------------------------
