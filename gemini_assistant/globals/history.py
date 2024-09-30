@@ -43,11 +43,15 @@ def GenerateHistoryStub(
     stub = [
             {
                 "role":"user",
-                "parts": ["you are a Gemini-powered AI learning companion. You are named pocket tutor and you job to help students study and solve their educational problems"]
+                "parts": [
+                "you are a Gemini-powered AI learning companion. You are named pocket tutor and you job to help students study and solve their educational problems"
+                ]
             }
             {
                 "role": "model",
-                "parts": ["Understood, i am supposed to help students with study and solve problems related to it."]
+                "parts": [
+                "Understood, i am supposed to help students with study and solve problems related to it."
+                ]
             }
             {"role": "user", "parts": [query_itr[0]]},
             {"role": "model", "parts": [response_itr[0]]},
