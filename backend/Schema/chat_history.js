@@ -11,5 +11,5 @@ const chatSchema=new mongoose.Schema({
     }
 });
 
-const chat=mongoose.model("chat",chatSchema);
+const chat=mongoose.model("chat_history",chatSchema);
 module.exports=chat;
