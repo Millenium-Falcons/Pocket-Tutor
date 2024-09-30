@@ -21,6 +21,13 @@ if platform.architecture()[1] == "ELF":
 
 
 def init_model(model_name: str, API: str) -> genai.GenerativeModel:
+    with open(".env", "r") as file:
+        api = file.readlines()
+        file.close()
+
+    API = api[0]
+    print(API)
+    print(type(API))
     genai.configure(api_key=API)
     model = genai.GenerativeModel(model_name)
     return model
@@ -32,7 +39,7 @@ def init_model(model_name: str, API: str) -> genai.GenerativeModel:
 def chat_session(query: str) -> str:
     model = init_model("gemini-1.5-flash", "")
     prompts, responses = LoadHistory()
-    session = model.start_chat(history=history.GenerateHistoryStub(prompts, responses))
+    session = model.start_chat(history=GenerateHistoryStub(prompts, responses))
     try:
         response = session.send_message(query)
         return response.text
