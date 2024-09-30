@@ -27,7 +27,7 @@ except Exception as e:
 # --------------------------------------------------------------------------
 
 db = client["Pocket_Tutor"]
-collection = db["chat_history"]
+collection = db["chat_histories"]
 
 # --------------------------------------------------------------------------
 
