@@ -15,6 +15,7 @@ import tempfile
 from chat import *
 from image import *
 from docs import *
+from globals.history import *
 from PIL import Image
 from pydantic import BaseModel
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Request, status
@@ -49,6 +50,7 @@ async def pchat(request: Request):
         query = await request.body()
         query_str = query.decode("utf-8")
         res = chat_session(query_str)
+        RecordHistory(query_str, res)
         return {"response": res}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
