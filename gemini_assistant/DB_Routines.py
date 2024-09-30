@@ -8,12 +8,11 @@
 #
 # --------------------------------------------------------------------------
 from typing import List, Dict
-from pymongo import write_concern
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 # --------------------------------------------------------------------------
 
-uri = ""
+uri = "mongodb+srv://debjeetbanerjee48:iNJfRwHgaZ7pCaSX@cluster.33qs8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"
 client = MongoClient(uri, server_api=ServerApi("1"))
 
 # --------------------------------------------------------------------------
