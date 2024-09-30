@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
-
+import {SelectList} from "react-native-dropdown-select-list";
 import { images } from "../../constants";
 import { createUser } from "../../lib/appwrite";
 import { CustomButton, FormField } from "../../components";
@@ -17,6 +17,12 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+  const data=[
+    {key:'1',value:'Java'},
+    {key:'2',value:'Javascript'},
+    {key:'3',value:'Python'},
+    {key:'4',value:'Rust'},
+]
 
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
@@ -79,9 +85,10 @@ const SignUp = () => {
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
           />
+          <SelectList data={data} setSelected={setSelected}></SelectList>
 
           <CustomButton
-            title="Sign Up"
+            title="Sign U"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}

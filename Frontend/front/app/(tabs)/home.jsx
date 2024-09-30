@@ -5,6 +5,7 @@ import { FlatList, Image, RefreshControl, Text, View, TouchableOpacity, Modal, S
 import { images } from "../../constants";
 import useAppwrite from "../../lib/useAppwrite";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import { HorizontalCard } from "../../components/HorizontalCard";
 
 const home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
@@ -83,6 +84,8 @@ const home = () => {
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
             </View>
+            <HorizontalCard heading="Revision Time"></HorizontalCard>
+
           </View>
         )}
       />
