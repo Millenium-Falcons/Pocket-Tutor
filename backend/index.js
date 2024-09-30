@@ -127,52 +127,67 @@ app.post("/ask-ai/doc", upload.single("doc"), async (req, res) => {
     storage: multer.memoryStorage(),
   });
 
-  app.post("/ask-ai/img",imageUpload.single("image"),async(req,res)=>{
-    const imageFile = req.file;
-    const { query }=req.body;
-    if(!imageFile || !query){
-      return res.status(400).json({error:"Image file or Query is Missing!"});
+  app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
+    const image= req.file;
+    const { query } = req.body;
+    if (!image || !query) {
+        return res.status(400).json({ error: "query or image file is required" });
     }
-    try{
-      const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`;
-      
-      const requestData = {
-          image: base64Image,
-          query: query
-      };
-      const aiResponse=await axios.post('http://localhost:8000/doc',requestData,{
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    console.log(aiResponse);
-    const result=aiResponse.data;
-    return res.status(200).json({response:result});
+  
+    try {
+        // Prepare the data to send to AI model
+        const base64Image = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
+        
+        const requestData = {
+            image: base64Image,
+            query: query
+        };
+  
+        // Send request to your AI model
+        const aiResponse = await axios.post('http://localhost:8000/image', requestData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(aiResponse);
+  
+        const disease = aiResponse.data;
+  
+        // Send only the disease as a string
+        res.status(200).json({response: disease });
+    } catch (error) {
+        console.error('Error communicating with AI:', error);
+        res.status(500).json({ error: "Failed to get response from AI" });
     }
-    catch{
-      return res.status(500).json({error:"Error while uploading image"});
-    }
+  
   });
 
-  app.post("/ask-ai/text",async(req,res)=>{
-    const { query }=req.body;
-    if(!query){
-      return res.status(400).json({error:"Query is Missing!"});
-    };
-    try{
-      const aiResponse=await axios.post('http://localhost:8000/doc',query,{
-        headers:{
-          'Content-Type':'text/plain'
+
+  app.post('/ask-ai', async (req, res) => {
+    const { query } = req.body;
+    console.log(query);
+  
+    if (!query) {
+        return res.status(400).json({ error: "query is required" });
+    }
+  
+    try {
+      // Send the query as a JSON body in the POST request
+      const aiResponse = await axios.post('http://localhost:8000/chat',query, {
+        headers: {
+          'Content-Type': 'text/plain'  // Set the content type to plain text
         }
       });
       console.log(aiResponse);
-      const result=aiResponse.data;
-      return res.status(200).json({response:result});
+  
+      // Return the actual AI response data to the client
+      res.status(200).json({ diagnosis: aiResponse.data });
+    } catch (error) {
+      console.error('Error communicating with AI:', error.message);
+      res.status(500).json({ error: "Failed to get response from AI" });
     }
-    catch{
-      return res.status(500).json({error:"Error while uploading text"});
-    };
   });
+
 
 app.post("/create-profile",imageUpload.single("ProfilePicture"),async(req,res)=>{
   const imageFile = req.file;
