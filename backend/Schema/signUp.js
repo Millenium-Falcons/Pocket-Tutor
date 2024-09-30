@@ -10,6 +10,9 @@ const signUpSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    courses: {
+      type: [String],
+    }
   });
   const signUp = mongoose.model("SignUp_Info", signUpSchema);
 

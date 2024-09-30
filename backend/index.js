@@ -10,6 +10,8 @@ const axios=require("axios");
 const FormData = require('form-data');
 const mongoose=require("mongoose");
 const signup=require("./Schema/signUp");
+const profile=require("./Schema/profile");
+const chat=require("./Schema/chat_history");
 const db_uri=process.env.DB_URI;
 const port=process.env.PORT;
 
@@ -24,11 +26,11 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.post("/signup", async (req, res) => {
-    const { username, password, confirmPassword } = req.body;
+    const { username, password, confirmPassword, courses } = req.body;
     try {
-      if (password !== confirmPassword) {
-        return res.status(400).send({ message: "Passwords are not matching" });
-      }
+      //if (password !== confirmPassword) {
+      //  return res.status(400).send({ message: "Passwords are not matching" });
+      //}
       const user = await signup.findOne({ username });
       if (user) {
         return res.status(401).json({ error: "User Already exists!!" });
@@ -38,6 +40,7 @@ app.post("/signup", async (req, res) => {
       const sign = new signup({
         username,
         password: hashedpassword,
+        courses
       });
       await sign.save();
       return res.status(201).json({ message: "User registered Successfully!!" });
@@ -72,9 +75,8 @@ const fileFilter = (req, file, cb) => {
       "text/plain",       // TXT
   ];
   
-  console.log("Detected MIME type:", file.mimetype); // Log detected MIME type
+  console.log("Detected MIME type:", file.mimetype);
   
-  // Check if the detected MIME type is allowed
   if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true); // Accept file
   } else {
@@ -82,45 +84,39 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Configure multer with memory storage and file filter
 const upload = multer({ 
   storage: multer.memoryStorage(),
   fileFilter: fileFilter 
 });
 
-// Endpoint to handle file upload
 app.post("/ask-ai/doc", upload.single("doc"), async (req, res) => {
   const file = req.file;
   const { query } = req.body;
 
-  // Check if file and query are provided
   if (!file || !query) {
       return res.status(400).json({ error: "File or query is missing!" });
   }
 
   try {
       const formData = new FormData();
-      // Append the file buffer and query to FormData
+
       formData.append('doc', file.buffer, {
           filename: file.originalname,
           //contentType: file.mimetype
       });
       formData.append('query', query);
 
-      // Send POST request to the AI endpoint
       const aiResponse = await axios.post('http://localhost:8000/doc', formData, {
           headers: {
               ...formData.getHeaders(), // Include headers from FormData
           },
       });
 
-      // Extract response from the AI server
       const result = aiResponse.data.response;
       res.status(200).json({ response: result });
 
   } catch (error) {
       console.error('Error uploading document:', error);
-      // Provide more context on the error to help debugging
       const errorMessage = error.response ? error.response.data : error.message;
       return res.status(500).json({ error: `Error uploading document: ${errorMessage}` });
   }
@@ -176,7 +172,115 @@ app.post("/ask-ai/doc", upload.single("doc"), async (req, res) => {
     catch{
       return res.status(500).json({error:"Error while uploading text"});
     };
-  })
+  });
+
+app.post("/create-profile",imageUpload.single("ProfilePicture"),async(req,res)=>{
+  const imageFile = req.file;
+  const {username,total_time,courses}=req.body;
+  try{
+    //const base64Image = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`
+    const user=await signup.findOne({username});
+    if(!user){
+      return res.status(400).json({error:"User not found!"});
+    }
+    const picture=imageFile.buffer.toString('base64');
+    const mime=imageFile.mimetype;
+    const data=new profile({
+      profilePicture:picture,
+      profilePictureType:mime,
+      username,
+      total_time,
+      courses
+    })
+    await data.save();
+    return res.status(200).json({ message: "Profile created successfully" });
+  }
+  catch{
+    return res.status(500).json({error:"Error while creating profile"});
+  }
+});
+
+app.get("/profile",async(req,res)=>{
+  try{
+    const {username}=req.query;
+    const user=await signup.findOne({username});
+    if(!user){
+      return res.status(400).json({error:"User not found!"});
+    }
+    const userProfile=await profile.findOne({username});
+    if (!userProfile) {
+      return res.status(404).json({ error: "Profile not found!" });
+    }
+
+    return res.status(200).json({ profile: userProfile });
+    
+  }
+  catch{
+    return res.status(500).json({error:"Error while fetching profile"});
+  }
+});
+
+app.put("/update-profile", imageUpload.single("ProfilePicture"), async (req, res) => {
+  const imageFile = req.file;
+  const { username, total_time, courses } = req.body;
+
+  try {
+    const user = await signup.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: "User not found!" });
+    }
+
+    const updatedFields = {};
+    if(total_time) updatedFields.total_time=total_time;
+    if(courses) updatedFields.courses=courses;
+
+    if (imageFile) {
+      updatedFields.picture = imageFile.buffer.toString('base64');
+      updatedFields.mime = imageFile.mimetype;
+    }
+
+    const updatedProfile = await profile.findOneAndUpdate(
+      { username },
+      updatedFields,
+      { new: true,runValidators:true }
+    );
+
+    if (!updatedProfile) {
+      return res.status(404).json({ error: "Profile not found!" });
+    }
+
+    return res.status(200).json({ message: "Profile updated successfully", profile: updatedProfile });
+  } catch (error) {
+    console.error("Error while updating profile:", error);
+    return res.status(500).json({ error: "Error while updating profile" });
+  }
+});
+
+
+app.post("/chat",async(req,res)=>{
+  try{
+    const {query,response}=req.body;
+    const previousChat=new chat({
+      query,
+      response
+    })
+    await previousChat.save();
+    return res.status(200).json({ message: "Chat history saved successfully" });
+  }
+  catch{
+    return res.status(500).json({error:"Error while saving chat history"});
+  }
+});
+
+app.get("/chat-history",async(req,res)=>{
+  try{
+    const chatHistory=await chat.find();
+    return res.status(200).json({ chatHistory });
+  }
+  catch{
+    return res.status(500).json({error:"Error while fetching chat history"});
+  }
+})
 
 app.listen(port,()=>{
     console.log("Server is Running!");
