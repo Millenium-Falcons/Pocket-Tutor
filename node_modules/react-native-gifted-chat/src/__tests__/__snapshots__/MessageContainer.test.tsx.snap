@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render <MessageContainer /> and compare with snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    ListEmptyComponent={[Function]}
+    ListFooterComponent={[Function]}
+    ListHeaderComponent={[Function]}
+    automaticallyAdjustContentInsets={false}
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+        "justifyContent": "flex-start",
+      }
+    }
+    data={[]}
+    extraData={
+      [
+        null,
+        false,
+      ]
+    }
+    getItem={[Function]}
+    getItemCount={[Function]}
+    invertStickyHeaders={true}
+    inverted={true}
+    isInvertedVirtualizedList={true}
+    keyExtractor={[Function]}
+    onContentSizeChange={[Function]}
+    onEndReached={[Function]}
+    onEndReachedThreshold={0.1}
+    onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={100}
+    stickyHeaderIndices={[]}
+    style={
+      [
+        {
+          "transform": [
+            {
+              "scaleY": -1,
+            },
+          ],
+        },
+        {
+          "flex": 1,
+        },
+      ]
+    }
+    viewabilityConfigCallbackPairs={[]}
+  >
+    <View>
+      <View
+        collapsable={false}
+        onLayout={[Function]}
+        style={
+          {
+            "transform": [
+              {
+                "scaleY": -1,
+              },
+            ],
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        onLayout={[Function]}
+        style={
+          {
+            "transform": [
+              {
+                "scaleY": -1,
+              },
+            ],
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
