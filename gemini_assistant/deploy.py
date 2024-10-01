@@ -43,6 +43,15 @@ def index():
 
 # -----------------------------------------------------------------------------------
 
+uri = ""
+client = MongoClient(uri, server_api=ServerApi("1"))
+try:
+    client.admin.command("ping")
+    print("You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+db = client["AgriShield"]
 
 @app.post("/chat")
 async def pchat(request: Request):
@@ -50,21 +59,21 @@ async def pchat(request: Request):
         query = await request.body()
         query_str = query.decode("utf-8")
         res = chat_session(query_str)
-        RecordHistory(query_str, res)
-        return {"response": res}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-
-# -----------------------------------------------------------------------------------
-
-
-@app.post("/image")
-def pimage(request: ImageReq, query: str = Form(...)):
-    try:
-        b = base64.b64decode(request.image.split(",")[1])
-        img = Image.open(io.BytesIO(b))
-        res = process_image(img, query)
+        question_history = db["chat_histories"]
+        chats = question_history.find({})
+        length = 0
+        count = 0
+        for i in chats:
+            length += 1
+        if length >= 10:
+            record_to_delete = question_history.find().sort("_id", 1).limit(1)
+            question_history.insert_one({"question": query_str, "response": res})
+            for i in record_to_delete:
+                for j in i:
+                    if j == "_id":
+                        question_history.delete_one({"_id": i[j]})
+        else:
+            question_history.insert_one({"question": query_str, "response": res})
         return {"response": res}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
