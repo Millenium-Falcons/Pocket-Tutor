@@ -1,5 +1,7 @@
 const dotenv=require("dotenv");
 dotenv.config();
+const { GoogleAIFileManager } = require("@google/generative-ai/server");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const express=require("express");
 const app=express();
 const bodyParser=require("body-parser");
@@ -7,6 +9,8 @@ const cors=require("cors");
 const bcryptjs = require("bcryptjs");
 const multer = require("multer");
 const axios=require("axios");
+const fs = require('fs'); // File system module to handle file operations
+const path = require('path'); // For handling and transforming file paths
 const FormData = require('form-data');
 const mongoose=require("mongoose");
 const signup=require("./Schema/signUp");
@@ -122,45 +126,68 @@ app.post("/ask-ai/doc", upload.single("doc"), async (req, res) => {
   }
 });
   
-  // Configure multer for image uploads
-  const imageUpload = multer({ 
-    storage: multer.memoryStorage(),
-  });
+const fileManager = new GoogleAIFileManager(process.env.API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-  app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
-    const image= req.file;
-    const { query } = req.body;
-    if (!image || !query) {
-        return res.status(400).json({ error: "query or image file is required" });
+// Multer setup for file upload (in memory storage)
+const imageUpload = multer({ storage: multer.memoryStorage() });
+
+app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
+  const image = req.file;
+  const { query } = req.body;
+
+  if (!image || !query) {
+    return res.status(400).json({ error: "Query or image file is required" });
+  }
+
+  // Define the path where the file will be temporarily stored
+  const tempFilePath = path.join(__dirname, 'temp', image.originalname);
+
+  try {
+    // Write the file buffer to the temporary location
+    fs.writeFileSync(tempFilePath, image.buffer);
+
+    // Upload the image to Google Generative AI
+    const uploadResult = await fileManager.uploadFile(
+      tempFilePath, // Provide the temporary file path
+      {
+        mimeType: image.mimetype,
+        displayName: image.originalname,
+      }
+    );
+
+    console.log(`Uploaded file ${uploadResult.file.displayName} as: ${uploadResult.file.uri}`);
+
+    // Prepare the request for generating content using AI model
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const result = await model.generateContent([
+      query, // Your query
+      {
+        fileData: {
+          fileUri: uploadResult.file.uri,
+          mimeType: uploadResult.file.mimeType,
+        },
+      },
+    ]);
+
+    // Delete the temporary file after successful upload
+    fs.unlinkSync(tempFilePath);
+
+    // Send the response back to the client
+    res.status(200).json({ response: result.response.text() });
+
+  } catch (error) {
+    console.error('Error communicating with Google Generative AI:', error);
+
+    // Clean up the temporary file in case of an error
+    if (fs.existsSync(tempFilePath)) {
+      fs.unlinkSync(tempFilePath);
     }
-  
-    try {
-        // Prepare the data to send to AI model
-        const base64Image = `data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
-        
-        const requestData = {
-            image: base64Image,
-            query: query
-        };
-  
-        // Send request to your AI model
-        const aiResponse = await axios.post('http://localhost:8000/image', requestData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(aiResponse);
-  
-        const disease = aiResponse.data;
-  
-        // Send only the disease as a string
-        res.status(200).json({response: disease });
-    } catch (error) {
-        console.error('Error communicating with AI:', error);
-        res.status(500).json({ error: "Failed to get response from AI" });
-    }
-  
-  });
+
+    res.status(500).json({ error: "Failed to get response from Google Generative AI" });
+  }
+});
 
 
   app.post('/ask-ai', async (req, res) => {
