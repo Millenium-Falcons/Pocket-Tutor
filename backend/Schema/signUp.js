@@ -12,6 +12,10 @@ const signUpSchema = new mongoose.Schema({
     },
     courses: {
       type: [String],
+    },
+    dates:{
+      type: [Date],
+      default:[],
     }
   });
   const signUp = mongoose.model("SignUp_Info", signUpSchema);

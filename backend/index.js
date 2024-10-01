@@ -68,6 +68,10 @@ app.post("/signup", async (req, res) => {
       if(!isMatch){
         return res.status(401).json({error:"Invalid username or password"});
       }else{
+        const currentDate = new Date().toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+        user.dates.push(currentDate); // Push formatted date
+        await user.save();
+
         return res.status(200).json({message:"Login Successful!!"});
       }
     }
