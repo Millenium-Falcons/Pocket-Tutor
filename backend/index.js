@@ -69,14 +69,30 @@ app.post("/signup", async (req, res) => {
         return res.status(401).json({error:"Invalid username or password"});
       }else{
         const currentDate = new Date().toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-        user.dates.push(currentDate); // Push formatted date
+        if(!user.dates.includes(currentDate)){
+          user.dates.push(currentDate); // Push formatted date
         await user.save();
+        }
 
         return res.status(200).json({message:"Login Successful!!"});
       }
     }
     catch{
       return res.status(400).json({message:"Error while Login"});
+    }
+  });
+
+  app.get("/login/date",async(req,res)=>{
+    try{
+      const {username}=req.query;
+      const user=await signup.findOne({username});
+      if(!user){
+        return res.status(401).json({error:"Invalid username"});
+      }
+      return res.status(200).json({message:user.dates});
+    }
+    catch{
+      return res.status(400).json({message:"Error while fetching date"});
     }
   })
 
