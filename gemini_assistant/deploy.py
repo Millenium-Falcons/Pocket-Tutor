@@ -59,20 +59,6 @@ async def pchat(request: Request):
 # -----------------------------------------------------------------------------------
 
 
-@app.post("/image")
-def pimage(request: ImageReq, query: str = Form(...)):
-    try:
-        b = base64.b64decode(request.image.split(",")[1])
-        img = Image.open(io.BytesIO(b))
-        res = process_image(img, query)
-        return {"response": res}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-
-# -----------------------------------------------------------------------------------
-
-
 @app.post("/doc")
 async def pdoc(doc: UploadFile = File(...), query: str = Form(...)):
     temp_file_path = None
