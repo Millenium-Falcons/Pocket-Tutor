@@ -29,6 +29,10 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the home page");
+});
+
 app.post("/signup", async (req, res) => {
     const { username, password, confirmPassword, courses } = req.body;
     try {
