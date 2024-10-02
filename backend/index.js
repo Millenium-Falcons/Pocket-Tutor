@@ -35,11 +35,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-    const { username, password, confirmPassword, courses } = req.body;
+    const { username, password, courses } = req.body;
     try {
-      //if (password !== confirmPassword) {
-      //  return res.status(400).send({ message: "Passwords are not matching" });
-      //}
       const user = await signup.findOne({ username });
       if (user) {
         return res.status(401).json({ error: "User Already exists!!" });
@@ -100,9 +97,12 @@ app.post("/signup", async (req, res) => {
   // File filter to validate MIME types
 const fileFilter = (req, file, cb) => {
   const allowedMimeTypes = [
-      "application/pdf",  // PDF
-      "text/plain",       // TXT
-  ];
+    "application/pdf",   // PDF
+    "text/plain",        // TXT
+    "image/webp",        // WEBP
+    "image/jpeg",        // JPG and JPEG
+    "image/png"          // PNG
+];
   
   console.log("Detected MIME type:", file.mimetype);
   
