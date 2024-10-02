@@ -97,9 +97,12 @@ app.post("/signup", async (req, res) => {
   // File filter to validate MIME types
 const fileFilter = (req, file, cb) => {
   const allowedMimeTypes = [
-      "application/pdf",  // PDF
-      "text/plain",       // TXT
-  ];
+    "application/pdf",   // PDF
+    "text/plain",        // TXT
+    "image/webp",        // WEBP
+    "image/jpeg",        // JPG and JPEG
+    "image/png"          // PNG
+];
   
   console.log("Detected MIME type:", file.mimetype);
   
@@ -210,6 +213,7 @@ app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
     res.status(500).json({ error: "Failed to get response from Google Generative AI" });
   }
 });
+
 
   app.post('/ask-ai', async (req, res) => {
     const { query,username } = req.body;
