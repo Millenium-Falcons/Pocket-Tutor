@@ -47,7 +47,4 @@ def chat_session(query: str) -> str:
         print(f"error: {e}")
 
 
-res = chat_session("hi there")
-print(res)
-print(mongodb_uri)
 # -----------------------------------------------------------------------------------
