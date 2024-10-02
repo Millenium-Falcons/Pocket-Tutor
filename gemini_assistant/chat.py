@@ -4,7 +4,6 @@
 #       responses using the API of Google Gemini. Chat session with
 #       pre-loaded history...history of last 10 chats with
 #       Google Gemini.
-#
 # -----------------------------------------------------------------------------------
 import os
 import dotenv
