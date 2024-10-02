@@ -35,11 +35,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-    const { username, password, confirmPassword, courses } = req.body;
+    const { username, password, courses } = req.body;
     try {
-      //if (password !== confirmPassword) {
-      //  return res.status(400).send({ message: "Passwords are not matching" });
-      //}
       const user = await signup.findOne({ username });
       if (user) {
         return res.status(401).json({ error: "User Already exists!!" });
