@@ -11,6 +11,7 @@
 import os
 import io
 import base64
+import dotenv
 import tempfile
 from chat import *
 from image import *
@@ -19,8 +20,9 @@ from history import *
 from PIL import Image
 from pydantic import BaseModel
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Request, status
-# -----------------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------------
+dotenv.load_dotenv()
 app = FastAPI()
 
 ALLOWED_FILE_TYPES = {
@@ -42,8 +44,7 @@ def index():
 
 
 # -----------------------------------------------------------------------------------
-
-uri = ""
+uri = os.environ.get("MONGODB_URI")
 client = MongoClient(uri, server_api=ServerApi("1"))
 try:
     client.admin.command("ping")
@@ -52,6 +53,7 @@ except Exception as e:
     print(e)
 
 db = client["Pocket_Tutor"]
+
 
 @app.post("/chat")
 async def pchat(request: Request):
@@ -70,13 +72,17 @@ async def pchat(request: Request):
             length += 1
         if length >= 10:
             record_to_delete = question_history.find().sort("_id", 1).limit(1)
-            question_history.insert_one({"username":user_,"question": query_, "response": res})
+            question_history.insert_one(
+                {"username": user_, "question": query_, "response": res}
+            )
             for i in record_to_delete:
                 for j in i:
                     if j == "_id":
                         question_history.delete_one({"_id": i[j]})
         else:
-            question_history.insert_one({"username":user_,"question": query_, "response": res})
+            question_history.insert_one(
+                {"username": user_, "question": query_, "response": res}
+            )
         return {"response": res}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

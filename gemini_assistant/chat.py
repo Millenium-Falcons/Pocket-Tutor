@@ -7,11 +7,18 @@
 #
 # -----------------------------------------------------------------------------------
 import os
+import dotenv
 import platform
 from sys import exception
+
 from history import *
 import google.generativeai as genai
 # -----------------------------------------------------------------------------------
+
+dotenv.load_dotenv()
+
+api_key = os.environ.get("API_KEY")
+mongodb_uri = os.environ.get("MONGODB_URI")
 
 if platform.architecture()[1] == "ELF":
     os.environ["GRPC_VERBOSITY"] = "ERROR"
@@ -30,7 +37,7 @@ def init_model(model_name: str, API: str) -> genai.GenerativeModel:
 
 
 def chat_session(query: str) -> str:
-    model = init_model("gemini-1.5-flash", "")
+    model = init_model("gemini-1.5-flash", api_key)
     prompts, responses = LoadHistory()
     session = model.start_chat(history=GenerateHistoryStub(prompts, responses))
     try:
@@ -40,4 +47,7 @@ def chat_session(query: str) -> str:
         print(f"error: {e}")
 
 
+res = chat_session("hi there")
+print(res)
+print(mongodb_uri)
 # -----------------------------------------------------------------------------------
