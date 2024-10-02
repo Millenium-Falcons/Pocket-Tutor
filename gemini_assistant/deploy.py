@@ -51,14 +51,17 @@ try:
 except Exception as e:
     print(e)
 
-db = client["AgriShield"]
+db = client["Pocket_Tutor"]
 
 @app.post("/chat")
 async def pchat(request: Request):
     try:
         query = await request.body()
         query_str = query.decode("utf-8")
-        res = chat_session(query_str)
+        sp = query_str.split("&")
+        query_ = sp[0].split("query=")[1]
+        user_ = sp[1].split("username=")[1]
+        res = chat_session(query_)
         question_history = db["chat_histories"]
         chats = question_history.find({})
         length = 0
@@ -67,13 +70,13 @@ async def pchat(request: Request):
             length += 1
         if length >= 10:
             record_to_delete = question_history.find().sort("_id", 1).limit(1)
-            question_history.insert_one({"question": query_str, "response": res})
+            question_history.insert_one({"username":user_,"question": query_, "response": res})
             for i in record_to_delete:
                 for j in i:
                     if j == "_id":
                         question_history.delete_one({"_id": i[j]})
         else:
-            question_history.insert_one({"question": query_str, "response": res})
+            question_history.insert_one({"username":user_,"question": query_, "response": res})
         return {"response": res}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
