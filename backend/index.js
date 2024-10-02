@@ -16,6 +16,7 @@ const mongoose=require("mongoose");
 const signup=require("./Schema/signUp");
 const profile=require("./Schema/profile");
 const chat=require("./Schema/chat_history");
+const video=require("./Schema/video");
 const db_uri=process.env.DB_URI;
 const port=process.env.PORT;
 
@@ -349,6 +350,33 @@ app.get("/chat-history",async(req,res)=>{
   }
   catch{
     return res.status(500).json({error:"Error while fetching chat history"});
+  }
+});
+
+app.post("/video",async(req,res)=>{
+  try{
+    const {videoFile,title,description,author}=req.body;
+    const vid=new video({
+      videoFile,
+      title,
+      description,
+      author
+    });
+    await vid.save();
+    return res.status(201).json({message:"Video uploaded successfully"});
+  }
+  catch{
+    return res.status(500).json({error:"Error while uploading video"});
+  }
+});
+
+app.get("/video-resources",async(req,res)=>{
+  try{
+    const videoResources=await video.find();
+    return res.status(200).json({videoResources});
+  }
+  catch{
+    return res.status(500).json({error:"Error while fetching videos"});
   }
 })
 
