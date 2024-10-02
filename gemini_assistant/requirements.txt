@@ -1,3 +1,4 @@
+pillow
 python-dotenv
 google-ai-generativelanguage==0.6.6
 google-api-core==2.19.1
