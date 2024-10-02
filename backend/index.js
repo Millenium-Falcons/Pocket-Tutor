@@ -29,6 +29,10 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the home page");
+});
+
 app.post("/signup", async (req, res) => {
     const { username, password, confirmPassword, courses } = req.body;
     try {
@@ -64,11 +68,31 @@ app.post("/signup", async (req, res) => {
       if(!isMatch){
         return res.status(401).json({error:"Invalid username or password"});
       }else{
+        const currentDate = new Date().toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+        if(!user.dates.includes(currentDate)){
+          user.dates.push(currentDate); // Push formatted date
+        await user.save();
+        }
+
         return res.status(200).json({message:"Login Successful!!"});
       }
     }
     catch{
       return res.status(400).json({message:"Error while Login"});
+    }
+  });
+
+  app.get("/login/date",async(req,res)=>{
+    try{
+      const {username}=req.query;
+      const user=await signup.findOne({username});
+      if(!user){
+        return res.status(401).json({error:"Invalid username"});
+      }
+      return res.status(200).json({message:user.dates});
+    }
+    catch{
+      return res.status(400).json({message:"Error while fetching date"});
     }
   })
 
@@ -191,24 +215,28 @@ app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
 
 
   app.post('/ask-ai', async (req, res) => {
-    const { query } = req.body;
+    const { query,username } = req.body;
     console.log(query);
-  
-    if (!query) {
+    
+    if (!query|| !username) {
         return res.status(400).json({ error: "query is required" });
     }
-  
+     const user=await signup.findOne({username});
+     if(!user){
+      return res.status(400).json({ error: "User not found" });
+     }
     try {
       // Send the query as a JSON body in the POST request
-      const aiResponse = await axios.post('http://localhost:8000/chat',query, {
-        headers: {
-          'Content-Type': 'text/plain'  // Set the content type to plain text
-        }
-      });
+      const aiResponse = await axios.post('http://localhost:8000/chat',`query=${query}&username=${username}`,
+            {
+                headers: {
+                    'Content-Type': 'text/plain' 
+                }
+            });
       console.log(aiResponse);
   
       // Return the actual AI response data to the client
-      res.status(200).json({ diagnosis: aiResponse.data });
+      res.status(200).json({ result: aiResponse.data });
     } catch (error) {
       console.error('Error communicating with AI:', error.message);
       res.status(500).json({ error: "Failed to get response from AI" });
