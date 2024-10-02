@@ -7,12 +7,15 @@
 #       10 chats to enter. It behaves like a queue.
 #
 # --------------------------------------------------------------------------
+import os
+import dotenv
 from typing import List, Dict
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-# --------------------------------------------------------------------------
 
-uri = ""
+# --------------------------------------------------------------------------
+dotenv.load_dotenv()
+uri = os.environ.get("MONGODB_URI")
 client = MongoClient(uri, server_api=ServerApi("1"))
 
 # --------------------------------------------------------------------------
