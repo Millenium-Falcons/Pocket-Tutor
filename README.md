@@ -64,7 +64,7 @@ now use `npm` to execute the frontend over your localhost
 npm run dev
 ```
 ### Gemini Assistant
-***<a href="https://github.com/mintRaven-05"> Debjeet Banerjee</a> is responsible for the creation and maintanace of the whole Google GenAI Gemini Assistant. It is written in python is deployed in the form of an API using FastAPI. It is responsible for processing text, images and documents for providing constructive responses. For setting up the GenAI, please read the following instructions:***
+***<a href="https://github.com/mintRaven-05"> Debjeet Banerjee</a> is responsible for the creation and maintanace of the whole Google GenAI Gemini Assistant. It is written in python and is deployed in the form of an API using FastAPI. It is responsible for processing text, images and documents for providing constructive responses. For setting up the GenAI, please read the following instructions:***
 
 Navigate in the cloned repository and go inside the `gemini_assistant` directory
 ```
