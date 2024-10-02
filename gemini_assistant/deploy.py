@@ -51,7 +51,7 @@ try:
 except Exception as e:
     print(e)
 
-db = client["AgriShield"]
+db = client["Pocket_Tutor"]
 
 @app.post("/chat")
 async def pchat(request: Request):
