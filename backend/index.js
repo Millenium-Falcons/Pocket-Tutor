@@ -211,7 +211,6 @@ app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
   }
 });
 
-
   app.post('/ask-ai', async (req, res) => {
     const { query,username } = req.body;
     console.log(query);
