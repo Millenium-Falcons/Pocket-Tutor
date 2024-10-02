@@ -215,24 +215,28 @@ app.post('/ask-ai/img', imageUpload.single('image'), async (req, res) => {
 
 
   app.post('/ask-ai', async (req, res) => {
-    const { query } = req.body;
+    const { query,username } = req.body;
     console.log(query);
-  
-    if (!query) {
+    
+    if (!query|| !username) {
         return res.status(400).json({ error: "query is required" });
     }
-  
+     const user=await signup.findOne({username});
+     if(!user){
+      return res.status(400).json({ error: "User not found" });
+     }
     try {
       // Send the query as a JSON body in the POST request
-      const aiResponse = await axios.post('http://localhost:8000/chat',query, {
-        headers: {
-          'Content-Type': 'text/plain'  // Set the content type to plain text
-        }
-      });
+      const aiResponse = await axios.post('http://localhost:8000/chat',`query=${query}&username=${username}`,
+            {
+                headers: {
+                    'Content-Type': 'text/plain' 
+                }
+            });
       console.log(aiResponse);
   
       // Return the actual AI response data to the client
-      res.status(200).json({ diagnosis: aiResponse.data });
+      res.status(200).json({ result: aiResponse.data });
     } catch (error) {
       console.error('Error communicating with AI:', error.message);
       res.status(500).json({ error: "Failed to get response from AI" });
