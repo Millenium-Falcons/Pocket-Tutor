@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
-import { createUser } from "../../lib/appwrite";
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
@@ -21,13 +20,15 @@ const SignUp = () => {
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
-      setIsLogged(true);                // added to bypass appwrite exception: bandwidth limit exceeded
-      router.replace("/home");          // added to bypass appwrite exception: bandwidth limit exceeded
+      setIsLogged(true);
+      router.replace("/home");
+      return;
     }
 
     setSubmitting(true);
     try {
-      const result = await createUser(form.email, form.password, form.username);
+      // Simulate user creation logic
+      const result = { username: form.username, email: form.email };
       setUser(result);
       setIsLogged(true);
 
@@ -48,14 +49,8 @@ const SignUp = () => {
             minHeight: Dimensions.get("window").height - 100,
           }}
         >
-          <Image
-            source={images.logo}
-            resizeMode="contain"
-            className="w-[115px] h-[34px]"
-          />
-
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Sign Up to Pocket Tutor
+            Sign Up to Pocket-Tutor
           </Text>
 
           <FormField

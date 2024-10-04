@@ -5,7 +5,6 @@ import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
 import { CustomButton, FormField } from "../../components";
-import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignIn = () => {
@@ -19,15 +18,16 @@ const SignIn = () => {
   const submit = async () => {
     if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
-      setIsLogged(true);                // added to bypass appwrite exception: bandwidth limit exceeded
-      router.replace("/home");          // added to bypass appwrite exception: bandwidth limit exceeded
+      setIsLogged(true);
+      router.replace("/home");
+      return;
     }
 
     setSubmitting(true);
 
     try {
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
+      // Simulate user sign-in logic
+      const result = { email: form.email };
       setUser(result);
       setIsLogged(true);
 
@@ -50,7 +50,7 @@ const SignIn = () => {
           }}
         >
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to Pocket Tutor
+            Log in to Pocket-Tutor
           </Text>
 
           <FormField

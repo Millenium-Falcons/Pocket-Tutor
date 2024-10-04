@@ -1,14 +1,11 @@
 import React, { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Image, RefreshControl, Text, View, TouchableOpacity, Modal, StyleSheet, Animated, Dimensions } from "react-native";
-
+import { FlatList, Image, Text, View, TouchableOpacity, Modal, StyleSheet, Animated, Dimensions } from "react-native";
+import { HorizontalCard } from "../../components/HorizontalCard";
 import { images } from "../../constants";
-import useAppwrite from "../../lib/useAppwrite";
-import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import { SearchInput } from "../../components";
 
 const home = () => {
-  const { data: posts, refetch } = useAppwrite(getAllPosts);
-  const { data: latestPosts } = useAppwrite(getLatestPosts);
 
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -55,11 +52,12 @@ const home = () => {
               <TouchableOpacity className="mt-1.5" onPress={handleLogoClick}>
                 <Image
                   source={images.logoSmall}
-                  className="w-12 h-12"
+                  className="w-7 h-10"
                   resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
+            <SearchInput />
             <View style={styles.welcomeBox}>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
@@ -83,6 +81,7 @@ const home = () => {
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
             </View>
+            <HorizontalCard heading="Revision Time"></HorizontalCard>
           </View>
         )}
       />

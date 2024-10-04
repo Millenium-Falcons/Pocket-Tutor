@@ -1,6 +1,6 @@
 import image from "../assets/icons/image.png";
 import home from "../assets/icons/home.png";
-import youtube from "../assets/icons/youtube.png";
+import ai from "../assets/icons/ai.png";
 import plus from "../assets/icons/plus.png";
 import profile from "../assets/icons/profile.png";
 import leftArrow from "../assets/icons/left-arrow.png";
@@ -12,15 +12,13 @@ import logout from "../assets/icons/logout.png";
 import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
-import ai from "../assets/icons/ai.png";
 
 export default {
   play,
-  image,
   home,
-  plus,
   ai,
-  youtube,
+  image,
+  plus,
   profile,
   leftArrow,
   menu,

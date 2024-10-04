@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const homeBoxInput = ({ onSend }) => {
+const ChatBoxInput = ({ onSend }) => {
     const [message, setMessage] = useState('');
 
     const handleSend = () => {
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default homeBoxInput;
+export default ChatBoxInput;
