@@ -1,3 +1,4 @@
+PIL
 pillow
 python-dotenv
 google-ai-generativelanguage==0.6.6
