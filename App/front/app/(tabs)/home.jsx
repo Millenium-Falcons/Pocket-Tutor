@@ -1,18 +1,16 @@
 import React, { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Image, RefreshControl, Text, View, TouchableOpacity, Modal, StyleSheet, Animated, Dimensions } from "react-native";
-
+import { FlatList, Image, Text, View, TouchableOpacity, Modal, StyleSheet, Animated, Dimensions } from "react-native";
+import { HorizontalCard } from "../../components/HorizontalCard";
 import { images } from "../../constants";
-import useAppwrite from "../../lib/useAppwrite";
-import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import { SearchInput } from "../../components";
+import { useNavigation } from '@react-navigation/native';
 
 const home = () => {
-  const { data: posts, refetch } = useAppwrite(getAllPosts);
-  const { data: latestPosts } = useAppwrite(getLatestPosts);
-
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+  const navigation = useNavigation();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -21,12 +19,7 @@ const home = () => {
   };
 
   const handleLogoClick = () => {
-    setModalVisible(true);
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
+    navigation.navigate('profile');
   };
 
   const closeModal = () => {
@@ -55,11 +48,12 @@ const home = () => {
               <TouchableOpacity className="mt-1.5" onPress={handleLogoClick}>
                 <Image
                   source={images.logoSmall}
-                  className="w-12 h-12"
+                  className="w-7 h-10"
                   resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
+            <SearchInput />
             <View style={styles.welcomeBox}>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
@@ -81,8 +75,8 @@ const home = () => {
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
               <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
-              <Text style={styles.welcomeText}>‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ </Text>
             </View>
+            <HorizontalCard heading="Revision Time"></HorizontalCard>
           </View>
         )}
       />
@@ -111,23 +105,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '80%',
-    height: '100%', // Full screen height
-    backgroundColor: '#10101c', // Dark theme background color
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-    color: '#fff', // Light text color for dark theme
-  },
-  closeButton: {
-    fontSize: 16,
-    color: 'lightblue', // Light color for close button
   },
   welcomeBox: {
     backgroundColor: '#1c1c2e',

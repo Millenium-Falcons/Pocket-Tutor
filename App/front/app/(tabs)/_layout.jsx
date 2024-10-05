@@ -63,7 +63,7 @@ const TabLayout = () => {
         <Tabs.Screen
           name="ai"
           options={{
-            title: "AI",
+            title: "ai",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
@@ -85,14 +85,12 @@ const TabLayout = () => {
               <TabIcon
                 icon={icons.profile}
                 color={color}
-                name="profile"
+                name="Profile"
                 focused={focused}
               />
             ),
           }}
         />
-
-        
       </Tabs>
 
       <Loader isLoading={loading} />

@@ -1,18 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import useAppwrite from "../../lib/useAppwrite";
-import { searchPosts } from "../../lib/appwrite";
 import { EmptyState, SearchInput, VideoCard } from "../../components";
 
 const Search = () => {
   const { query } = useLocalSearchParams();
-  const { data: posts, refetch } = useAppwrite(() => searchPosts(query));
+  const [posts, setPosts] = useState([]);
+
+  const fetchPosts = async (query) => {
+    // Simulate fetching posts logic
+    const fetchedPosts = [
+      // Example data
+      {
+        $id: "1",
+        title: "Sample Video",
+        thumbnail: "sample-thumbnail.jpg",
+        video: "sample-video.mp4",
+        creator: {
+          username: "creator1",
+          avatar: "creator-avatar.jpg",
+        },
+      },
+    ];
+    setPosts(fetchedPosts);
+  };
 
   useEffect(() => {
-    refetch();
+    fetchPosts(query);
   }, [query]);
 
   return (
@@ -40,7 +56,7 @@ const Search = () => {
               </Text>
 
               <View className="mt-6 mb-8">
-                <SearchInput initialQuery={query} refetch={refetch} />
+                <SearchInput initialQuery={query} refetch={() => fetchPosts(query)} />
               </View>
             </View>
           </>
