@@ -1,5 +1,5 @@
 {
-  "name": "Jynxer",
+  "name": "Pocket-Tutor",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -12,7 +12,7 @@
     "@google/generative-ai": "^0.19.0",
     "@types/react": "~18.2.45",
     "axios": "^1.7.7",
-    "expo": "^51.0.32",
+    "expo": "~51.0.36",
     "expo-av": "~14.0.7",
     "expo-constants": "~16.0.2",
     "expo-device": "~6.0.2",
