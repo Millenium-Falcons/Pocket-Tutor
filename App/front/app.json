@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "",
-    "slug": "",
-    "version": "1.0.0",
+    "name": "Pocket-Tutor",
+    "description": "Pocket Tutor is a mobile application that helps students learn and understand their subjects better using gemini LLM AI.",
+    "slug": "pocket-tutor",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,21 +12,34 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "",
-    "assetBundlePatterns": ["**/*"],
+    "scheme": "pocket-tutor",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.milleniumfalcons.pockettutor",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/pocket-tutor.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jsm."
+      "package": "com.milleniumfalcons.pockettutor",
+      "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/pocket-tutor.png"
     },
-    "plugins": ["expo-router", "expo-font"]
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "38f184ab-c278-4ee6-91da-570e2ea89bb6"
+      }
+    }
   }
 }
