@@ -10,6 +10,7 @@
 #           -> image/heic
 #           -> image/heif
 #       We will be using only the first 3 MIME types.
+#
 # -------------------------------------------------------------
 import os
 import platform
