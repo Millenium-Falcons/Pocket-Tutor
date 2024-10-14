@@ -28,7 +28,7 @@ const Profile = () => {
           style={{
             width: cellSize - 1,
             height: cellSize - 1,
-            backgroundColor: hasLoggedIn ? '#FFA001' : 'rgba(255, 255, 255, 0.1)', // Green for logged in, transparent for not
+            backgroundColor: hasLoggedIn ? '#FFA001' : 'rgba(255, 255, 255, 0.1)',
             margin: 0.5,
             borderRadius: 2,
           }}
